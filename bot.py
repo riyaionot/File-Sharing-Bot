@@ -10,6 +10,14 @@ import sys
 from datetime import datetime
 
 from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, CHANNEL_ID, PORT
+from aiohttp import web
+from plugins import web_server
+
+PORT = "8080"
+app = web.AppRunner(await web_server())
+await app.setup()
+bind_address = "0.0.0.0"
+await web.TCPSite(app, bind_address, PORT).start()
 
 class Bot(Client):
     def __init__(self):
